@@ -1,37 +1,24 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { ToDoItem } from './types';
+import ListItem from './components/ListItem.vue';
+import AddListItem from './components/AddListItem.vue';
 
-function createNewItem(): ToDoItem {
-  return {
-    id: -1,
-    completed: false,
-    title: '',
-    sortOrder: -1,
-    createDate: new Date(),
-    editItem: false,
-  };
-}
 
 const items = ref<ToDoItem[]>([]);
-const newItem = ref<ToDoItem>(createNewItem());
 
-function addItem() {
-  newItem.value.createDate = new Date();
-  newItem.value.id = newItem.value.createDate.getTime();
-
+function addItem(item: ToDoItem) {
   // Find the maximum sortOrder value in the items array
-  const maxSortOrder = Math.max(...items.value.map(item => item.sortOrder));
+  const maxSortOrder = Math.max(...items.value.map((i: ToDoItem) => i.sortOrder));
 
   // Set the sortOrder for newItem to the maximum sortOrder + 10
-  newItem.value.sortOrder = maxSortOrder + 10;
-  items.value.push(newItem.value);
+  item.sortOrder = maxSortOrder + 10;
+  items.value.push(item);
   watchCompleted(items.value[items.value.length - 1]);
-  newItem.value = createNewItem();
 }
 
 function deleteItem(item: ToDoItem) {
-  items.value = items.value.filter(i => i.id !== item.id);
+  items.value = items.value.filter((i) => i.id !== item.id);
 }
 
 function moveItemUp(item: ToDoItem) {
@@ -64,7 +51,6 @@ const watchCompleted = (item: ToDoItem) => {
     (newVal) => updateCompletedDate(item, newVal)
   );
 };
-
 </script>
 
 <template>
@@ -83,66 +69,12 @@ const watchCompleted = (item: ToDoItem) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in items" :key="item.id">
-          <td><input type="checkbox" v-model="item.completed"></td>
-          <td :class="[{ 'text-line-through': item.completed }]">{{ item.id }}</td>
-          <td :class="['text-left', { 'text-line-through': item.completed }]"
-            :title="'Created Date: ' + item.createDate.toLocaleString() + (item.completedDate ? '\nCompleted Date: ' + item.completedDate?.toLocaleString() : '')">
-            <span v-if="!item.editItem" @click="item.editItem = true"> {{ item.title }} </span>
-            <span v-else><input type="text" v-model="item.title" @blur="item.editItem = false" @keyup.enter="item.editItem = false"></span>
-          </td>
-          <td class="text-left">
-            <button @click="deleteItem(item)">Delete</button>
-            <button :disabled="index >= items.length - 1" @click="moveItemDown(item)">Down</button>
-            <button :disabled="index <= 0" @click="moveItemUp(item)">Up</button>
-          </td>
-        </tr>
+        <template v-for="(item, index) in items" :key="item.id">
+          <ListItem v-model="items[index]" :items="items" :index="index" @deleteItem="deleteItem"
+            @moveItemUp="moveItemUp" @moveItemDown="moveItemDown"></ListItem>
+        </template>
       </tbody>
-      <tfoot>
-        <tr>
-          <td class="text-center"><input type="checkbox" v-model="newItem.completed"></td>
-          <td class="text-left">
-          </td>
-          <td class="text-left">
-            <input type="text" placeholder="What needs to be done?" v-model="newItem.title" @keypress.enter="addItem()">
-          </td>
-          <td class="text-left"><button @click="addItem()">Add</button></td>
-        </tr>
-      </tfoot>
+      <AddListItem @addItem="addItem" />
     </table>
   </main>
 </template>
-
-<style scoped>
-header {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-main table {
-  width: 840px;
-}
-
-main table button {
-  width: 60px;
-  padding: 1px;
-  margin: 1px 2px;
-}
-
-main table td,
-main table th {
-  text-align: center;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-line-through {
-  text-decoration: line-through;
-}
-</style>

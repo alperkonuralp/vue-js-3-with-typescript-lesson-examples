@@ -38,3 +38,37 @@ a,
     padding: 0 2rem;
   }
 }
+
+
+
+header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+main table {
+  width: 840px;
+}
+
+main table button {
+  width: 60px;
+  padding: 1px;
+  margin: 1px 2px;
+}
+
+main table td,
+main table th {
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-line-through {
+  text-decoration: line-through;
+}
