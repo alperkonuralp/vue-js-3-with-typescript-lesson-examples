@@ -89,7 +89,8 @@ const watchCompleted = (item: ToDoItem) => {
           <td :class="['text-left', { 'text-line-through': item.completed }]"
             :title="'Created Date: ' + item.createDate.toLocaleString() + (item.completedDate ? '\nCompleted Date: ' + item.completedDate?.toLocaleString() : '')">
             <span v-if="!item.editItem" @click="item.editItem = true"> {{ item.title }} </span>
-            <span v-else><input type="text" v-model="item.title" @blur="item.editItem = false" @keyup.enter="item.editItem = false"></span>
+            <span v-else><input type="text" v-model="item.title" @blur="item.editItem = false"
+                @keyup.enter="item.editItem = false"></span>
           </td>
           <td class="text-left">
             <button @click="deleteItem(item)">Delete</button>
@@ -119,8 +120,17 @@ header {
   margin-bottom: 15px;
 }
 
-main table {
-  width: 840px;
+@media (max-width: 1024px) {
+  main table {
+    width: 100%;
+    max-width: 840px;
+  }
+}
+
+@media (min-width: 1024px) {
+  main table {
+    width: 840px;
+  }
 }
 
 main table button {
