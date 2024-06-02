@@ -1,47 +1,60 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+    <h1>To Do List</h1>
   </header>
 
   <main>
-    <TheWelcome />
+    <table>
+      <thead>
+        <tr>
+          <th>Complete?</th>
+          <th class="text-left">Description</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><input type="checkbox"></td>
+          <td class="text-left">Walk the dog</td>
+          <td class="text-center"><button>Delete</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="text-center"><input type="checkbox"></td>
+          <td class="text-left">
+            <input type="text" placeholder="What needs to be done?">
+          </td>
+          <td class="text-center"><button>Add</button></td>
+        </tr>
+      </tfoot>
+    </table>
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+main table {
+  width: 840px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.text-center {
+  text-align: center;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.text-left {
+  text-align: left;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.text-line-through {
+  text-decoration: line-through;
 }
 </style>
