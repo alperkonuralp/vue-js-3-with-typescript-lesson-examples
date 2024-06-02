@@ -42,8 +42,16 @@ header {
   margin-bottom: 15px;
 }
 
-main table {
-  width: 840px;
+@media (max-width: 1024px) {
+  main table {
+    width: 100%;
+    max-width: 840px;
+  }
+}
+@media (min-width: 1024px) {
+  main table {
+    width: 840px;
+  }
 }
 
 .text-center {
